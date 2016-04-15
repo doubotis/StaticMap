@@ -29,7 +29,7 @@ Best part of the engine is about the customization. You can add many layers as y
 * A basemap is not required.
 
 ## License
-GNU Generic Public License
+[GNU Generic Public License](https://github.com/doubotis/MapPictureGenerator/blob/master/LICENSE)
 
 ## Quick Guide
 
