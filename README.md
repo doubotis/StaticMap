@@ -28,6 +28,9 @@ Best part of the engine is about the customization. You can add many layers as y
 * At least 1 layer.
 * A basemap is not required.
 
+## License
+GNU Generic Public License
+
 ## Quick Guide
 
 ### Installation
