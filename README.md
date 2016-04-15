@@ -52,3 +52,48 @@ mp.setZoom(13);
 mp.addLayer(baseMap);
 mp.drawInto(new File(outPath));
 ```
+
+### Additional features
+
+###### fitBounds(bounds)
+Instead of setting the location and zoom, you can tell the `MapPicture` object to fit bounds.
+```
+mp.fitBounds(new LocationBounds(xmin, xmax, ymin, ymax));
+```
+
+###### fitBounds(bounds, minZoom, maxZoom)
+You can tell the fit bounds method to limit the zoom range to min-max values.
+```
+mp.fitBounds(new LocationBounds(xmin, xmax, ymin, ymax), minZoom, maxZoom);
+```
+
+###### Use `LocationPathLayer`
+You can add a linestring by adding a `LocationPathLayer` to your `MapPicture` object.
+
+```
+Location[] path;
+final LocationPathLayer layer = new LocationPathLayer(path);
+mapPicture.addLayer(layer);
+```
+
+###### Create your custom layer
+You can add yourself a custom layer by creating a class that implements `Layer`.
+
+```
+public class YourLayer implements Layer {
+  ...
+  
+  @Override
+    public void draw(Graphics2D graphics, MapPicture mp) {
+      // Get the current projection.
+      MercatorProjection proj = mp.getProjection();
+      
+      // Get the tile size.
+      int tileSize = proj.getTileSize();
+      
+      // Get the Offset (that means, the offset from the true position of an element, 
+      // please see LocationPathLayer for examples of the use of this method).
+      PointF offset = mp.getOffset();
+    }
+}
+```
