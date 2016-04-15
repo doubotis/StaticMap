@@ -27,3 +27,28 @@ Best part of the engine is about the customization. You can add many layers as y
 * Add some agreements, like pins, lines or polygons
 * At least 1 layer.
 * A basemap is not required.
+
+## Quick Guide
+
+### Installation
+
+1. Build the library by yourself or use this **[distribution jar](https://github.com/doubotis/MapPictureGenerator/blob/master/dist/MapPictureGenerator.jar)**.
+2. Add the .jar to your project.
+3. Add the JTS library **[jts-1.8.jar](https://github.com/doubotis/MapPictureGenerator/blob/master/lib/jts-1.8.jar)**.
+
+### Use the library
+
+Instantiate a `MapPicture` object, and pass the width and height of the wanted final image as parameters.
+From this object you can set the location and zoom.
+Create a `TMSMapType` to set the basemap provider source, then add it to the list of layers of the `MapPicture`.
+Finally, tell the library to draw the image into a file or into an output stream.
+
+Here's the final example:
+```
+MapPicture mp = new MapPicture(pictureWidth, pictureHeight);
+TMSMapType baseMap = new TMSMapType("http://{s}.tile.osm.org/{z}/{x}/{y}.png");
+mp.setLocation(50.5, 5.5);
+mp.setZoom(13);
+mp.addLayer(baseMap);
+mp.drawInto(new File(outPath));
+```
