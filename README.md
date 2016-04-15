@@ -17,6 +17,8 @@ Maybe you want bigger pictures?
 
 ![Sample 3](https://github.com/doubotis/MapPictureGenerator/blob/master/samples/sample-3.png)
 
+*Tiles are served from the OSM Topo Maps tile provider*
+
 Supports any tile size with a very wide range of resolutions.
 The library was tested from 8x8 to 9933x7026 (A1 page, 300dpi) resolutions with good results.
 
