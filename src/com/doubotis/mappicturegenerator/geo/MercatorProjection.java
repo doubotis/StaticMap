@@ -77,12 +77,12 @@ public final class MercatorProjection
         return new Location(lat, lng);
     }
     
-    public static double longitudeFromTile(int x, int z)
+    public double longitudeFromTile(int x, int z)
     {
             return (x/Math.pow(2,z)*360-180);
     }
 
-    public static double latitudeFromTile(int y, int z)
+    public double latitudeFromTile(int y, int z)
     {
             double n=Math.PI-2*Math.PI*y/Math.pow(2,z);
             return (180/Math.PI*Math.atan(0.5*(Math.exp(n)-Math.exp(-n))));

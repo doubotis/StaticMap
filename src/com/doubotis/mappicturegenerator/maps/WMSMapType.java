@@ -6,7 +6,10 @@
 package com.doubotis.mappicturegenerator.maps;
 
 import com.doubotis.mappicturegenerator.MapPicture;
+import com.doubotis.mappicturegenerator.geo.Location;
+import com.doubotis.mappicturegenerator.geo.LocationBounds;
 import com.doubotis.mappicturegenerator.geo.MercatorProjection;
+import com.doubotis.mappicturegenerator.geo.PointF;
 import java.awt.Graphics2D;
 import java.awt.Image;
 
@@ -46,11 +49,33 @@ public class WMSMapType extends TMSMapType
         String pattern = "";
         pattern += mHost;
         pattern += "?service=WMS&version=1.1.1&request=GetMap&Layers=";
-        for (String layer : mLayers)
-            pattern += layer + ",";
-        pattern += "&Styles=&SRS=EPSG:4326&BBOX=0,61.60639637138628,11.25,66.51326044311188";
-        pattern += "&width=" + 256;
-        pattern += "&height=" + 256;
+        for (int i=0; i < mLayers.length; i++)
+        {
+            pattern += mLayers[i];
+            if (i < mLayers.length - 1)
+                pattern += ",";
+        }
+        
+        // Compute locations corners.
+        double lat = proj.latitudeFromTile(tileY, tileZ);
+        double lon = proj.longitudeFromTile(tileX, tileZ);
+        Location topLeftLocation = new Location(lat, lon);
+        
+        PointF topLeftCorner = proj.fromLatLngToPoint(lat, lon, tileZ);
+        PointF bottomRightCorner = new PointF(topLeftCorner.x + proj.getTileSize(),
+                topLeftCorner.y + proj.getTileSize());
+        Location bottomRightLocation = proj.fromPointToLatLng(bottomRightCorner, tileZ);
+        
+        LocationBounds bounds = new LocationBounds(
+                topLeftLocation.longitude,
+                bottomRightLocation.longitude,
+                topLeftLocation.latitude,
+                bottomRightLocation.latitude);
+            
+        pattern += "&Styles=&SRS=EPSG:4326";
+        pattern += "&BBOX=" + bounds.xmin + "," + bounds.ymax + "," + bounds.xmax + "," + bounds.ymin;
+        pattern += "&width=" + proj.getTileSize();
+        pattern += "&height=" + proj.getTileSize();
         pattern += (mIsPNG) ? "&format=image/png" : "&format=image/jpg";
         pattern += "&TRANSPARENT=" + ((mIsTransparent) ? "TRUE" : "FALSE");
         pattern += (mFilter == null) ? "" : "&cql_Filter=" + mFilter;
