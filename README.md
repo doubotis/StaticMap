@@ -19,8 +19,14 @@ Maybe you want bigger pictures?
 
 *Tiles are served from the OSM Topo Maps tile provider*
 
-Supports any tile size with a very wide range of resolutions.
-The library was tested from 8x8 to 9933x7026 (A1 page, 300dpi) resolutions with good results.
+Bigger and bigger. Superimpose TMs and WMS layers.
+
+![Sample 4](https://github.com/doubotis/MapPictureGenerator/blob/master/samples/sample-4.png)
+
+*Tiles served from the OSM Base Maps tile provider, and dots served from the WMS Geolives S.A. Server Tile, displaying all public trails of the SityTrail community.*
+
+**Supports any tile size with a very wide range of resolutions.
+The library was tested from 8x8 to 9933x7026 (A1 page, 300dpi) resolutions with good results.**
 
 Best part of the engine is about the customization. You can add many layers as you want.
 * Add transparent TMS or WMS layers on top of a basemap
