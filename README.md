@@ -97,3 +97,9 @@ public class YourLayer implements Layer {
     }
 }
 ```
+
+Then add it to the `MapPicture` object.
+```
+YourLayer layer = new YourLayer();
+mapPicture.addLayer(layer);
+```
