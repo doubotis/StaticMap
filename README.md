@@ -11,7 +11,7 @@ Here's an exemple of what you can produce with this, small pictures first:
 ![Sample 1](https://github.com/doubotis/MapPictureGenerator/blob/master/samples/sample-1.png)
 ![Sample 2](https://github.com/doubotis/MapPictureGenerator/blob/master/samples/sample-2.png)
 
-*Tiles for pictures 1 to 2 are served from the OSM Topo Maps tile provider. Tiles for pictures 3 are served from the OSM Base Maps tile provider.*
+*Tiles for picture 1 to are served from the OSM Topo Maps tile provider. Tiles for pictures 2 and 3 are served from the OSM Base Maps tile provider.*
 
 Maybe you want bigger pictures?
 
