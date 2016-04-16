@@ -3,7 +3,9 @@ Customizable Static Image Map Generator
 
 This library manages the production of images for map vizualization in the Java language, using tiled maps.
 This could be used for creation of small "preview" pictures, or produce very big images, for printing for instance.
-**The nearest well-known example is the [Google Static Maps API](https://developers.google.com/maps/documentation/static-maps/?hl=fr). Basically, this engine is able to generate the same-like images, except the tile source must be provided by yourself.**
+**The nearest well-known example is the [Google Static Maps API](https://developers.google.com/maps/documentation/static-maps/?hl=fr). Basically, this library is able to generate the same-like images, except the tile source must be provided by yourself.**
+
+**Additionnally, this library is _NOT_ a wrapper for Static Maps APIs (Bing, MapBox, Google, ...). The library will not request any services to make the map, he will MAKE the map itself, by requesting and assembling the map tiles from a tile service.**
 
 Here's an exemple of what you can produce with this, small pictures first:
 
