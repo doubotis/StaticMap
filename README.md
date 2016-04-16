@@ -1,4 +1,4 @@
-# Static Maps Generator
+# Static Map Generator
 Customizable Static Image Map Generator
 
 This library manages the production of images for map vizualization in the Java language, using tiled maps.
