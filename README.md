@@ -30,11 +30,11 @@ Bigger and bigger. Superimpose TMs and WMS layers.
 **Supports any tile size with a very wide range of resolutions.
 The library was tested from 8x8 to 9933x7026 (A1 page, 300dpi) resolutions with good results.**
 
-Best part of the engine is about the customization. You can add many layers as you want.
-* Add transparent TMS or WMS layers on top of a basemap
-* Add some agreements, like pins, lines or polygons
-* At least 1 layer.
-* A basemap is not required.
+## Features
+* From 8x8 to infinite map sizes (tested until 9933x7026, A1 page at 300dpi)
+* Includes TMS and WMS easy-to-use layers
+* Supports user-defined custom layers
+* Infinite number of layers
 
 ## License
 [GNU Generic Public License](https://github.com/doubotis/MapPictureGenerator/blob/master/LICENSE)
