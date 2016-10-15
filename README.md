@@ -7,6 +7,12 @@ This could be used for creation of small "preview" pictures, or produce very big
 
 **Additionnally, this library is _NOT_ a wrapper for Static Maps APIs (Bing, MapBox, Google, ...). The library will not request any services to make the map, he will MAKE the map itself, by requesting and assembling the map tiles from a tile service, like MapBox or OpenStreetMap tile services.**
 
+### Features
+* From 8x8 to infinite map sizes (tested until 9933x7026, A1 page at 300dpi)
+* Includes TMS and WMS easy-to-use layers
+* Supports user-defined custom layers
+* Infinite number of layers
+
 Here's an exemple of what you can produce with this, small pictures first:
 
 ![Sample 0](https://github.com/doubotis/MapPictureGenerator/blob/master/samples/sample-0.png)
@@ -29,12 +35,6 @@ Bigger and bigger. Superimpose TMs and WMS layers.
 
 **Supports any tile size with a very wide range of resolutions.
 The library was tested from 8x8 to 9933x7026 (A1 page, 300dpi) resolutions with good results.**
-
-## Features
-* From 8x8 to infinite map sizes (tested until 9933x7026, A1 page at 300dpi)
-* Includes TMS and WMS easy-to-use layers
-* Supports user-defined custom layers
-* Infinite number of layers
 
 ## License
 [GNU Generic Public License](https://github.com/doubotis/MapPictureGenerator/blob/master/LICENSE)
