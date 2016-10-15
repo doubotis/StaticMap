@@ -5,7 +5,7 @@
  */
 package com.doubotis.mappicturegenerator.layers;
 
-import com.doubotis.mappicturegenerator.MapPicture;
+import com.doubotis.mappicturegenerator.StaticMap;
 import com.doubotis.mappicturegenerator.geo.Location;
 import com.doubotis.mappicturegenerator.geo.LocationBounds;
 import com.doubotis.mappicturegenerator.geo.LocationPath;
@@ -58,7 +58,7 @@ public class LocationPathLayer implements Layer
     }
 
     @Override
-    public void draw(Graphics2D graphics, MapPicture mp) {
+    public void draw(Graphics2D graphics, StaticMap mp) {
         
         MercatorProjection proj = mp.getProjection();
         int tileSize = proj.getTileSize();

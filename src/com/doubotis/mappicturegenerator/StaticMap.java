@@ -28,12 +28,9 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 
-/**
- *
- * @author Christophe
- */
-public class MapPicture {
-    
+/** Core class of the MapPictureCreator library. Serves the final results. */
+public class StaticMap
+{    
     private static final int DEFAULT_TILE_SIZE = 256;
     
     private Location mLocation;
@@ -46,73 +43,95 @@ public class MapPicture {
     private ArrayList<Layer> mLayers = new ArrayList<Layer>();
     private PointF mOffset;
     
-    public MapPicture(int width, int height)
+    /** Build a static map with the specified width and height. In pixels. */
+    public StaticMap(int width, int height)
     {
         mWidth = width;
         mHeight = height;
     }
     
+    /** Sets the location for this map. */
     public void setLocation(double lat, double lon)
     {
         mLocation = new Location(lat, lon);
     }
     
+    /** Sets the location for this map. */
     public void setLocation(Location l)
     {
         mLocation = l;
     }
     
+    /** Returns the current location for this map. */
     public Location getLocation()
     {
         return mLocation;
     }
     
+    /** Sets the zoom level for this map. */
     public void setZoom(int zoom)
     {
         mZoom = zoom;
     }
     
+    /** Returns the current zoom level for this map. */
     public int getZoom()
     {
         return mZoom;
     }
     
+    /** Sets the width of this map. In pixels. */
     public void setWidth(int width)
     {
         mWidth = width;
     }
     
+    /** Sets the height of this map. In pixels. */
     public void setHeight(int height)
     {
         mHeight = height;
     }
     
+    /** Sets the size of this map. In pixels. */
     public void setSize(int width, int height)
     {
         mWidth = width;
         mHeight = height;
     }
     
+    /** Returns the width of this map, in pixels. */
     public int getWidth()
     {
         return mWidth;
     }
     
+    /** Returns the height of this map, in pixels. */
     public int getHeight()
     {
         return mHeight;
     }
     
+    /** Sets a custom projection. A projection is used to compute relations
+     * between real locations and positions on the final picture.
+     * See {@link MercatorProjection}.
+     */
     public void setProjection(MercatorProjection projection)
     {
         mProjection = projection;
     }
     
+    /** Returns the current projection. A projection is used to compute relations
+     * between real locations and positions on the final picture.
+     * See {@link MercatorProjection}.
+     */
     public MercatorProjection getProjection()
     {
         return mProjection;
     }
     
+    /** Gets the offset between the values returned by the {@link MercatorProjection}
+     * and the position on the final picture, depending on the size.
+     */
     public PointF getOffset()
     {
         return mOffset;
@@ -146,30 +165,48 @@ public class MapPicture {
             layer.draw(graphics, this);
     }
     
+    /** Runs the procedure of drawing. Stores the result into the specified {@link File}. */
     public void drawInto(File file) throws IOException
     {
         proceedDraw();
         ImageIO.write(mImage, "PNG", file);
     }
     
+    /** Runs the procedure of drawing. Stores the result into the specified {@link OutputStream}. */
     public void drawInto(OutputStream os) throws IOException
     {
         proceedDraw();
         ImageIO.write(mImage, "PNG", os);
     }
 
+    /** Adds a {@link Layer} onto the map. The layer will be drawn from the first to the last.
+     * For instance, you can add any {@link BaseMapType}, {@link TMSMapType} or {@link WMSMapType}
+     * object.
+     */
     public void addLayer(Layer layer) {
         mLayers.add(layer);
     }
     
+    /** Inserts a {@link Layer} onto the map at the specified index. The layer will be drawn from the first to the last.
+     * For instance, you can add any {@link BaseMapType}, {@link TMSMapType} or {@link WMSMapType}
+     * object.
+     */
     public void insertLayer(Layer layer, int index) {
         mLayers.add(index, layer);
     }
     
+    /** Removes the spceified {@link Layer} from the map. The removed layer will
+     * not been drawn anymore.
+     */
     public void removeLayer(Layer layer) {
         mLayers.remove(layer);
     }
 
+    /** Tell the map to fit the bounds of a {@link LocationBounds}. This method will
+     * sets location and zoom level depending on the size of the final picture
+     * and the specified bounds.<br/>
+     * You can specify a minimum and maximum zoom.
+     */
     public void fitBounds(LocationBounds bounds, int minZoom, int maxZoom) {
         
         // Find which zoom value to set.
@@ -245,6 +282,10 @@ public class MapPicture {
         return pixels;
     }
 
+    /** Tell the map to fit the bounds of a {@link LocationBounds}. This method will
+     * sets location and zoom level depending on the size of the final picture
+     * and the specified bounds.
+     */
     public void fitBounds(LocationBounds bounds) {
         fitBounds(bounds, 3, 20);
     }

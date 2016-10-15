@@ -3,13 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/E:/Developer/NetBeansProjects/MapPictureGenerator/src/com/doubotis/mappicturegenerator/maps/TMSMapType.java</file>
-            <file>file:/E:/Developer/NetBeansProjects/MapPictureGenerator/src/com/doubotis/mappicturegenerator/geo/Location.java</file>
-            <file>file:/E:/Developer/NetBeansProjects/MapPictureGenerator/src/com/doubotis/mappicturegenerator/MapPicture.java</file>
             <file>file:/E:/Developer/NetBeansProjects/MapPictureGenerator/src/com/doubotis/mappicturegenerator/layers/LocationPathLayer.java</file>
+            <file>file:/E:/Developer/NetBeansProjects/MapPictureGenerator/src/com/doubotis/mappicturegenerator/maps/TMSMapType.java</file>
             <file>file:/E:/Developer/NetBeansProjects/MapPictureGenerator/src/com/doubotis/mappicturegenerator/maps/WMSMapType.java</file>
-            <file>file:/E:/Developer/NetBeansProjects/MapPictureGenerator/src/com/doubotis/mappicturegenerator/geo/LocationBounds.java</file>
             <file>file:/E:/Developer/NetBeansProjects/MapPictureGenerator/src/com/doubotis/mappicturegenerator/maps/BaseMapType.java</file>
+            <file>file:/E:/Developer/NetBeansProjects/MapPictureGenerator/src/com/doubotis/mappicturegenerator/geo/LocationBounds.java</file>
+            <file>file:/E:/Developer/NetBeansProjects/MapPictureGenerator/src/com/doubotis/mappicturegenerator/geo/Location.java</file>
         </group>
     </open-files>
 </project-private>

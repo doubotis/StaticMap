@@ -15,6 +15,12 @@ public final class MercatorProjection
     private PointF _pixelOrigin;
     private double _pixelsPerLonDegree;
     private double _pixelsPerLonRadian;
+	
+	public MercatorProjection()
+    {
+        // Default is 256x256.
+        this(256);
+    }
 
     public MercatorProjection(int tileSize)
     {

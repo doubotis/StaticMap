@@ -5,7 +5,7 @@
  */
 package com.doubotis.mappicturegenerator.maps;
 
-import com.doubotis.mappicturegenerator.MapPicture;
+import com.doubotis.mappicturegenerator.StaticMap;
 import com.doubotis.mappicturegenerator.geo.Location;
 import com.doubotis.mappicturegenerator.geo.MercatorProjection;
 import com.doubotis.mappicturegenerator.geo.MercatorUtils;
@@ -38,7 +38,7 @@ public abstract class BaseMapType implements Layer
     public abstract Image getTile(int tileX, int tileY, int tileZ);
 
     @Override
-    public void draw(Graphics2D graphics, MapPicture mp)
+    public void draw(Graphics2D graphics, StaticMap mp)
     {
         MercatorProjection proj = mp.getProjection();
         int tileSize = proj.getTileSize();

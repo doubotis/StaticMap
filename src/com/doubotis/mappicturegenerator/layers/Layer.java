@@ -5,7 +5,7 @@
  */
 package com.doubotis.mappicturegenerator.layers;
 
-import com.doubotis.mappicturegenerator.MapPicture;
+import com.doubotis.mappicturegenerator.StaticMap;
 import java.awt.Graphics2D;
 
 /**
@@ -14,6 +14,6 @@ import java.awt.Graphics2D;
  */
 public interface Layer {
     
-    public void draw(Graphics2D graphics, MapPicture mp);
+    public void draw(Graphics2D graphics, StaticMap mp);
     
 }
