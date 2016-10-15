@@ -51,7 +51,7 @@ Best part of the engine is about the customization. You can add many layers as y
 
 Instantiate a `StaticMap` object, and pass the width and height of the wanted final image as parameters.
 From this object you can set the location and zoom.
-Create a `TMSMapType` to set the basemap provider source, then add it to the list of layers of the `MapPicture`.
+Create a `TMSMapType` to set the basemap provider source, then add it to the list of layers of the `StaticMap`.
 Finally, tell the library to draw the image into a file or into an output stream.
 
 Here's the final example:
@@ -67,7 +67,7 @@ mp.drawInto(new File(outPath));
 ### Additional features
 
 ###### fitBounds(bounds)
-Instead of setting the location and zoom, you can tell the `MapPicture` object to fit bounds.
+Instead of setting the location and zoom, you can tell the `StaticMap` object to fit bounds.
 ```
 mp.fitBounds(new LocationBounds(xmin, xmax, ymin, ymax));
 ```
@@ -95,7 +95,7 @@ public class YourLayer implements Layer {
   ...
   
   @Override
-    public void draw(Graphics2D graphics, MapPicture mp) {
+    public void draw(Graphics2D graphics, StaticMap mp) {
       // Get the current projection.
       MercatorProjection proj = mp.getProjection();
       
