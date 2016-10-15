@@ -49,14 +49,14 @@ Best part of the engine is about the customization. You can add many layers as y
 
 ### Use the library
 
-Instantiate a `MapPicture` object, and pass the width and height of the wanted final image as parameters.
+Instantiate a `StaticMap` object, and pass the width and height of the wanted final image as parameters.
 From this object you can set the location and zoom.
 Create a `TMSMapType` to set the basemap provider source, then add it to the list of layers of the `MapPicture`.
 Finally, tell the library to draw the image into a file or into an output stream.
 
 Here's the final example:
 ```
-MapPicture mp = new MapPicture(pictureWidth, pictureHeight);
+StaticMap mp = new StaticMap(pictureWidth, pictureHeight);
 TMSMapType baseMap = new TMSMapType("http://{s}.tile.osm.org/{z}/{x}/{y}.png");
 mp.setLocation(50.5, 5.5);
 mp.setZoom(13);
@@ -79,12 +79,12 @@ mp.fitBounds(new LocationBounds(xmin, xmax, ymin, ymax), minZoom, maxZoom);
 ```
 
 ###### Use `LocationPathLayer`
-You can add a linestring by adding a `LocationPathLayer` to your `MapPicture` object.
+You can add a linestring by adding a `LocationPathLayer` to your `StaticMap` object.
 
 ```
 Location[] path;
 final LocationPathLayer layer = new LocationPathLayer(path);
-mapPicture.addLayer(layer);
+staticMap.addLayer(layer);
 ```
 
 ###### Create your custom layer
@@ -109,8 +109,8 @@ public class YourLayer implements Layer {
 }
 ```
 
-Then add it to the `MapPicture` object.
+Then add it to the `StaticMap` object.
 ```
 YourLayer layer = new YourLayer();
-mapPicture.addLayer(layer);
+staticMap.addLayer(layer);
 ```
