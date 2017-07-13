@@ -36,6 +36,10 @@ Bigger and bigger. Superimpose TMs and WMS layers.
 **Supports any tile size with a very wide range of resolutions.
 The library was tested from 8x8 to 9933x7026 (A1 page, 300dpi) resolutions with good results.**
 
+## Stability
+Used for generating small static images in production environment for 1 year, without problems.
+Used for printing services in beta-test environment, without problems.
+
 ## License
 [GNU Generic Public License](https://github.com/doubotis/MapPictureGenerator/blob/master/LICENSE)
 
