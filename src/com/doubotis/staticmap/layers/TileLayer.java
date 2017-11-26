@@ -15,15 +15,15 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-package com.doubotis.staticmap.maps;
+package com.doubotis.staticmap.layers;
 
 import com.doubotis.staticmap.StaticMap;
 import com.doubotis.staticmap.geo.Location;
-import com.doubotis.staticmap.geo.MercatorProjection;
-import com.doubotis.staticmap.geo.MercatorUtils;
 import com.doubotis.staticmap.geo.PointF;
 import com.doubotis.staticmap.geo.Tile;
+import com.doubotis.staticmap.geo.projection.MercatorProjection;
 import com.doubotis.staticmap.layers.Layer;
+import java.awt.AlphaComposite;
 import java.awt.Graphics2D;
 import java.awt.Image;
 
@@ -31,7 +31,7 @@ import java.awt.Image;
  *
  * @author Christophe
  */
-public abstract class BaseMapType implements Layer
+public abstract class TileLayer implements Layer
 {
     
     private int mTileSize = 256;
@@ -42,6 +42,7 @@ public abstract class BaseMapType implements Layer
         mOpacity = opacity;
     }
     
+    /** Returns the opacity of the layer, between 0 and 1. */
     public float getOpacity()
     {
         return mOpacity;
@@ -52,42 +53,42 @@ public abstract class BaseMapType implements Layer
     @Override
     public void draw(Graphics2D graphics, StaticMap mp)
     {
+        // Apply opacity
+        float alpha = getOpacity();
+        AlphaComposite composite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha);
+        graphics.setComposite(composite);
+        
         MercatorProjection proj = mp.getProjection();
         int tileSize = proj.getTileSize();
         
-        int tileX = proj.tileXFromLongitude(mp.getLocation().mLongitude, mp.getZoom());
-        int tileY = proj.tileYFromLatitude(mp.getLocation().mLatitude, mp.getZoom());
+        int tileX = tileXFromLongitude(mp.getLocation().getLongitude(), mp.getZoom());
+        int tileY = tileYFromLatitude(mp.getLocation().getLatitude(), mp.getZoom());
         int tileZ = mp.getZoom();
         
         
         // Get the top left point.
         PointF topLeftPixels = new PointF(0 + mp.getOffset().x,
                 0 + mp.getOffset().y);
-        System.out.println("topLeftPixels: " + topLeftPixels.toString());
-        Location topLeftLocation = proj.fromPointToLatLng(topLeftPixels, mp.getZoom());
-        System.out.println("topLeftLocation: " + topLeftLocation.toString());
+        Location topLeftLocation = proj.project(topLeftPixels, mp.getZoom());
         Tile topLeftTile = new Tile(
-                proj.tileXFromLongitude(topLeftLocation.mLongitude, mp.getZoom()),
-                proj.tileYFromLatitude(topLeftLocation.mLatitude, mp.getZoom()),
+                tileXFromLongitude(topLeftLocation.getLongitude(), mp.getZoom()),
+                tileYFromLatitude(topLeftLocation.getLatitude(), mp.getZoom()),
                 mp.getZoom());
         
         // Get the bottom right point.
         PointF bottomRightPixels = new PointF(mp.getWidth() + mp.getOffset().x,
                 mp.getHeight() + mp.getOffset().y);
-        System.out.println("bottomRightPixels: " + bottomRightPixels.toString());
-        Location bottomRightLocation = proj.fromPointToLatLng(bottomRightPixels, mp.getZoom());
-        System.out.println("bottomRightLocation: " + bottomRightLocation.toString());
+        Location bottomRightLocation = proj.project(bottomRightPixels, mp.getZoom());
         Tile bottomRightTile = new Tile(
-                proj.tileXFromLongitude(bottomRightLocation.mLongitude, mp.getZoom()),
-                proj.tileYFromLatitude(bottomRightLocation.mLatitude, mp.getZoom()),
+                tileXFromLongitude(bottomRightLocation.getLongitude(), mp.getZoom()),
+                tileYFromLatitude(bottomRightLocation.getLatitude(), mp.getZoom()),
                 mp.getZoom());
         
-        System.out.println("");
-        
         // Get the top left corner or the top left tile before looping.
-        double topLeftCornerLat = proj.latitudeFromTile(topLeftTile.y, mp.getZoom());
-        double topLeftCornerLon = proj.longitudeFromTile(topLeftTile.x, mp.getZoom());
-        PointF topLeftCorner = proj.fromLatLngToPoint(topLeftCornerLat, topLeftCornerLon, mp.getZoom());
+        double topLeftCornerLat = latitudeFromTile(topLeftTile.y, mp.getZoom());
+        double topLeftCornerLon = longitudeFromTile(topLeftTile.x, mp.getZoom());
+        Location topLeftLoc = new Location(topLeftCornerLat, topLeftCornerLon);
+        PointF topLeftCorner = proj.unproject(topLeftLoc, mp.getZoom());
         
         int i = 0,j = 0;
         for (int y = topLeftTile.y; y <= bottomRightTile.y; y++)
@@ -95,7 +96,6 @@ public abstract class BaseMapType implements Layer
             for (int x = topLeftTile.x; x <= bottomRightTile.x; x++)
             {
                 // Get the tile.
-                System.out.println("Get the tile " + x + "," + y + "," + tileZ);
                 Image im = getTile(x, y, tileZ);
                 
                 // Get the "true" pos.
@@ -105,8 +105,6 @@ public abstract class BaseMapType implements Layer
                 // Get the pos.
                 PointF tilePos = new PointF(truePos.x - mp.getOffset().x ,
                     truePos.y - mp.getOffset().y);
-                
-                System.out.println("Draw the tile at " + tilePos.x + "," + tilePos.y);
                 
                 // Draw the tile.
                 graphics.drawImage(im,
@@ -121,6 +119,36 @@ public abstract class BaseMapType implements Layer
             i = 0;
             j++;
         }
+        
+        // Reset composite.
+        composite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f);
+        graphics.setComposite(composite);
     }
     
+    // === Static methods ===
+    
+    public static double longitudeFromTile(int x, int z)
+    {
+            return (x/Math.pow(2,z)*360-180);
+    }
+
+    public static  double latitudeFromTile(int y, int z)
+    {
+        final double latRadians = StrictMath.PI - (2.0 * StrictMath.PI) * y / (1 << z);
+        final double latitude = StrictMath.atan(StrictMath.exp(latRadians)) / StrictMath.PI * 360.0 - 90.0;
+        return latitude;
+    }
+
+    public static int tileXFromLongitude(double lon, int z)
+    {
+        return ((int)Math.floor( (lon + 180) / 360 * (1<<z) ));
+    }
+
+    public static int tileYFromLatitude(double lat, int z)
+    {
+        final double alpha = Math.toRadians(lat);
+        
+        final int tileY = (int)StrictMath.floor( (float) ((1.0 - StrictMath.log((StrictMath.sin(alpha) + 1.0) / StrictMath.cos(alpha)) / StrictMath.PI) * 0.5 * (1 << z)));
+        return tileY;
+    }
 }

@@ -15,8 +15,9 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-package com.doubotis.staticmap.maps;
+package com.doubotis.staticmap.layers;
 
+import com.doubotis.staticmap.layers.TileLayer;
 import java.awt.Image;
 import java.net.URL;
 import javax.imageio.ImageIO;
@@ -25,13 +26,13 @@ import javax.imageio.ImageIO;
  *
  * @author Christophe
  */
-public class TMSMapType extends BaseMapType
+public class TMSLayer extends TileLayer
 {
     private static final String[] SUBDOMAINS = new String[]{"a","b","c"};
     
     protected String mPattern;
 
-    public TMSMapType(String pattern)
+    public TMSLayer(String pattern)
     {
         mPattern = pattern;
     }
@@ -42,7 +43,6 @@ public class TMSMapType extends BaseMapType
         try
         {
             String buildedUrl = buildURL(tileX, tileY, tileZ);
-            System.out.println("Retreive tile from URL " + buildedUrl);
             URL url = new URL(buildedUrl);
             Image image = ImageIO.read(url);
             return image;

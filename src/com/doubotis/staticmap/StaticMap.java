@@ -28,13 +28,13 @@ import javax.imageio.ImageIO;
 import com.doubotis.staticmap.geo.LocationBounds;
 import com.doubotis.staticmap.geo.Location;
 import com.doubotis.staticmap.geo.LocationPath;
-import com.doubotis.staticmap.geo.MercatorProjection;
-import com.doubotis.staticmap.geo.MercatorUtils;
 import com.doubotis.staticmap.geo.PointF;
 import com.doubotis.staticmap.geo.Tile;
-import com.doubotis.staticmap.layers.LocationPathLayer;
+import com.doubotis.staticmap.geo.projection.MercatorProjection;
 import com.doubotis.staticmap.layers.Layer;
-import com.doubotis.staticmap.maps.TMSMapType;
+import com.doubotis.staticmap.layers.TMSLayer;
+import com.doubotis.staticmap.layers.TileLayer;
+import java.awt.AlphaComposite;
 import java.awt.RenderingHints;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -51,7 +51,7 @@ public class StaticMap
     private int mWidth;
     private int mHeight;
     private BufferedImage mImage = null;
-    private MercatorProjection mProjection = new MercatorProjection(DEFAULT_TILE_SIZE);
+    private MercatorProjection mProjection = new MercatorProjection();
     private ArrayList<Layer> mLayers = new ArrayList<Layer>();
     private PointF mOffset;
     
@@ -123,6 +123,30 @@ public class StaticMap
         return mHeight;
     }
     
+    /** Convert WGS84 coordinates to point on the map. */
+    public PointF fromLatLngToPoint(double lat, double lng, int zoom)
+    {
+        final PointF offset = getOffset();
+        
+        Location loc = new Location(lat, lng);
+        PointF pt = getProjection().unproject(loc, zoom);
+        
+        PointF offsetDone = new PointF(pt.x - offset.x, pt.y - offset.y);
+        return offsetDone;
+    }
+
+    /** convert point on the map to WGS84 coordinates. */
+    public Location fromPointToLatLng(PointF pt, int zoom)
+    {
+        final PointF offset = getOffset();
+        
+        // Offset the point for computation.
+        final PointF thePoint = new PointF(pt.x + offset.x, pt.y + offset.y);
+        
+        Location result = getProjection().project(thePoint, zoom);
+        return result;
+    }
+    
     /** Sets a custom projection. A projection is used to compute relations
      * between real locations and positions on the final picture.
      * See {@link MercatorProjection}.
@@ -173,8 +197,11 @@ public class StaticMap
         
         prepare(graphics);
         
-        for (Layer layer : mLayers)
+        
+        
+        for (Layer layer : mLayers) {
             layer.draw(graphics, this);
+        }
     }
     
     /** Runs the procedure of drawing. Stores the result into the specified {@link File}. */
@@ -192,7 +219,7 @@ public class StaticMap
     }
 
     /** Adds a {@link Layer} onto the map. The layer will be drawn from the first to the last.
-     * For instance, you can add any {@link BaseMapType}, {@link TMSMapType} or {@link WMSMapType}
+     * For instance, you can add any {@link BaseMapType}, {@link TMSLayer} or {@link WMSMapType}
      * object.
      */
     public void addLayer(Layer layer) {
@@ -200,7 +227,7 @@ public class StaticMap
     }
     
     /** Inserts a {@link Layer} onto the map at the specified index. The layer will be drawn from the first to the last.
-     * For instance, you can add any {@link BaseMapType}, {@link TMSMapType} or {@link WMSMapType}
+     * For instance, you can add any {@link BaseMapType}, {@link TMSLayer} or {@link WMSMapType}
      * object.
      */
     public void insertLayer(Layer layer, int index) {
@@ -213,6 +240,14 @@ public class StaticMap
     public void removeLayer(Layer layer) {
         mLayers.remove(layer);
     }
+    
+    /** Tell the map to fit the bounds of a {@link LocationBounds}. This method will
+     * sets location and zoom level depending on the size of the final picture
+     * and the specified bounds.
+     */
+    public void fitBounds(LocationBounds bounds) {
+        fitBoundsPadding(bounds, 3, 20, 0);
+    }
 
     /** Tell the map to fit the bounds of a {@link LocationBounds}. This method will
      * sets location and zoom level depending on the size of the final picture
@@ -220,6 +255,31 @@ public class StaticMap
      * You can specify a minimum and maximum zoom.
      */
     public void fitBounds(LocationBounds bounds, int minZoom, int maxZoom) {
+        fitBoundsPadding(bounds, minZoom, maxZoom, 0);
+    }
+    
+    /** Tell the map to fit the bounds of a {@link LocationBounds}. This method will
+     * sets location and zoom level depending on the size of the final picture
+     * and the specified bounds.<br/>
+     * You can specify a padding to apply to the map.
+     * This doesn't means the padding will be exactly matching, but while
+     * computing the right zoom, the padding will be taken in account in order to
+     * not allowing space in each side, lower than this padding.
+     */
+    public void fitBoundsPadding(LocationBounds bounds, int padding) {
+        fitBoundsPadding(bounds, 3, 20, padding);
+    }
+
+    /** Tell the map to fit the bounds of a {@link LocationBounds}. This method will
+     * sets location and zoom level depending on the size of the final picture
+     * and the specified bounds.<br/>
+     * You can specify a padding to apply to the map.
+     * This doesn't means the padding will be exactly matching, but while
+     * computing the right zoom, the padding will be taken in account in order to
+     * not allowing space in each side, lower than this padding.<br/>
+     * You can specify a minimum and maximum zoom.
+     */
+    public void fitBoundsPadding(LocationBounds bounds, int minZoom, int maxZoom, int padding) {
         
         // Find which zoom value to set.
         setLocation(bounds.getCenter());
@@ -244,11 +304,11 @@ public class StaticMap
             // Compute?
             PointF topLeftPixels = new PointF(0 + rp.x,
                 0 + rp.y);
-            Location topLeftLocation = mp.fromPointToLatLng(topLeftPixels, baseZoom);
+            Location topLeftLocation = mp.project(topLeftPixels, baseZoom);
             
             PointF bottomRightPixels = new PointF(mWidth + rp.x,
                 mHeight + rp.y);
-            Location bottomRightLocation = mp.fromPointToLatLng(bottomRightPixels, baseZoom);
+            Location bottomRightLocation = mp.project(bottomRightPixels, baseZoom);
             
             // Test if in bounds
             LocationBounds bboxCalculation = new LocationBounds(topLeftLocation.mLongitude, bottomRightLocation.mLongitude, topLeftLocation.mLatitude, bottomRightLocation.mLatitude);
@@ -267,22 +327,18 @@ public class StaticMap
         MercatorProjection proj = getProjection();
         int tileSize = proj.getTileSize();
         
-        int tileX = proj.tileXFromLongitude(getLocation().mLongitude, zoom);
-        int tileY = proj.tileYFromLatitude(getLocation().mLatitude, zoom);
+        int tileX = TileLayer.tileXFromLongitude(getLocation().mLongitude, zoom);
+        int tileY = TileLayer.tileYFromLatitude(getLocation().mLatitude, zoom);
         int tileZ = mZoom;
         
         // Which position for this tile ?
-        double tileLat = proj.latitudeFromTile(tileY, tileZ);
-        double tileLon = proj.longitudeFromTile(tileX, tileZ);
+        double tileLat = TileLayer.latitudeFromTile(tileY, tileZ);
+        double tileLon = TileLayer.longitudeFromTile(tileX, tileZ);
         
-        System.out.println("tileLat: " + tileLat);
-        System.out.println("tileLon: " + tileLon);
+        Location tileLoc = new Location(tileLat, tileLon);
+        PointF tilePixels = proj.unproject(tileLoc, tileZ);
         
-        PointF tilePixels = proj.fromLatLngToPoint(tileLat, tileLon, tileZ);
-        System.out.println("tilePixels" + tilePixels.toString());
-        
-        PointF centerPixels = proj.fromLatLngToPoint(getLocation().mLatitude, getLocation().mLongitude, zoom);
-        System.out.println("centerPixels" + centerPixels.toString());
+        PointF centerPixels = proj.unproject(getLocation(), zoom);
         
         // Le centre en 824, 539 est l'équivalent de 100,100 sur l'image.
         int centerImageX = mWidth / 2;
@@ -292,14 +348,6 @@ public class StaticMap
                 centerPixels.y - centerImageY);
         
         return pixels;
-    }
-
-    /** Tell the map to fit the bounds of a {@link LocationBounds}. This method will
-     * sets location and zoom level depending on the size of the final picture
-     * and the specified bounds.
-     */
-    public void fitBounds(LocationBounds bounds) {
-        fitBounds(bounds, 3, 20);
     }
     
 }

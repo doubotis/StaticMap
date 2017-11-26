@@ -15,13 +15,13 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-package com.doubotis.staticmap.maps;
+package com.doubotis.staticmap.layers;
 
 import com.doubotis.staticmap.StaticMap;
 import com.doubotis.staticmap.geo.Location;
 import com.doubotis.staticmap.geo.LocationBounds;
-import com.doubotis.staticmap.geo.MercatorProjection;
 import com.doubotis.staticmap.geo.PointF;
+import com.doubotis.staticmap.geo.projection.MercatorProjection;
 import java.awt.Graphics2D;
 import java.awt.Image;
 
@@ -29,7 +29,7 @@ import java.awt.Image;
  *
  * @author Christophe
  */
-public class WMSMapType extends TMSMapType
+public class WMSLayer extends TMSLayer
 {
     private boolean mIsPNG = true;
     private boolean mIsTransparent = true;
@@ -41,7 +41,7 @@ public class WMSMapType extends TMSMapType
     protected String mFilter;
     private StaticMap mMapPicture;
 
-    public WMSMapType(String host, String[] layers) {
+    public WMSLayer(String host, String[] layers) {
         super(host);
         
         mHost = mPattern;
@@ -69,20 +69,20 @@ public class WMSMapType extends TMSMapType
         }
         
         // Compute locations corners.
-        double lat = proj.latitudeFromTile(tileY, tileZ);
-        double lon = proj.longitudeFromTile(tileX, tileZ);
+        double lat = latitudeFromTile(tileY, tileZ);
+        double lon = longitudeFromTile(tileX, tileZ);
         Location topLeftLocation = new Location(lat, lon);
         
-        PointF topLeftCorner = proj.fromLatLngToPoint(lat, lon, tileZ);
+        PointF topLeftCorner = proj.unproject(topLeftLocation, tileZ);
         PointF bottomRightCorner = new PointF(topLeftCorner.x + proj.getTileSize(),
                 topLeftCorner.y + proj.getTileSize());
-        Location bottomRightLocation = proj.fromPointToLatLng(bottomRightCorner, tileZ);
+        Location bottomRightLocation = proj.project(bottomRightCorner, tileZ);
         
         LocationBounds bounds = new LocationBounds(
-                topLeftLocation.mLongitude,
-                bottomRightLocation.mLongitude,
-                topLeftLocation.mLatitude,
-                bottomRightLocation.mLatitude);
+                topLeftLocation.getLongitude(),
+                bottomRightLocation.getLongitude(),
+                topLeftLocation.getLatitude(),
+                bottomRightLocation.getLatitude());
             
         pattern += "&Styles=&SRS=EPSG:4326";
         pattern += "&BBOX=" + bounds.xmin + "," + bounds.ymax + "," + bounds.xmax + "," + bounds.ymin;

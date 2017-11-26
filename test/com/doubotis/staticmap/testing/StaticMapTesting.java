@@ -1,4 +1,4 @@
-package com.doubotis.testing.staticmap;
+package com.doubotis.staticmap.testing;
 
 /*
  * Copyright (C) 2017 Admin
@@ -19,7 +19,7 @@ package com.doubotis.testing.staticmap;
  */
 
 import com.doubotis.staticmap.StaticMap;
-import com.doubotis.staticmap.maps.TMSMapType;
+import com.doubotis.staticmap.layers.TMSLayer;
 import java.io.File;
 import org.junit.Before;
 import org.junit.Test;
@@ -44,12 +44,13 @@ public class StaticMapTesting {
             mp.setLocation(50.5, 5.5);
             mp.setZoom(14);
             
-            TMSMapType osmMap = new TMSMapType("http://{s}.tile.osm.org/{z}/{x}/{y}.png");
+            TMSLayer osmMap = new TMSLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png");
             mp.addLayer(osmMap);
             
             File f = new File(File.separator + "test.png");
-            System.out.println("Printing result in file " + f.getAbsolutePath());
+            System.out.println("Printing small map in file " + f.getAbsolutePath() + "...");
             mp.drawInto(f);
+            System.out.println("Printing done");
         
         } catch (Exception e)
         {
@@ -58,7 +59,7 @@ public class StaticMapTesting {
     }
     
     @Test
-    public void testMapOfCity() {
+    public void testMapOfCityWithOpacity() {
         
         try
         {
@@ -67,12 +68,14 @@ public class StaticMapTesting {
             mp.setLocation(48.8529009, 2.2454292);
             mp.setZoom(14);
             
-            TMSMapType osmMap = new TMSMapType("http://{s}.tile.osm.org/{z}/{x}/{y}.png");
+            TMSLayer osmMap = new TMSLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png");
+            osmMap.setOpacity(0.5f);
             mp.addLayer(osmMap);
             
             File f = new File(File.separator + "test2.png");
-            System.out.println("Printing result in file " + f.getAbsolutePath());
+            System.out.println("Printing map of city with opacity in file " + f.getAbsolutePath() + "...");
             mp.drawInto(f);
+            System.out.println("Printing done");
         
         } catch (Exception e)
         {
