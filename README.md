@@ -7,6 +7,12 @@ This could be used for creation of small "preview" pictures, or produce very big
 
 **Additionnally, this library is _NOT_ a wrapper for Static Maps APIs (Bing, MapBox, Google, ...). The library will not request any services to make the map, he will MAKE the map itself, by requesting and assembling the map tiles from a tile service, like MapBox or OpenStreetMap tile services.**
 
+### Features
+* From 8x8 to infinite map sizes (tested until 9933x7026, A1 page at 300dpi)
+* Includes TMS and WMS easy-to-use layers
+* Supports user-defined custom layers
+* Infinite number of layers
+
 Here's an exemple of what you can produce with this, small pictures first:
 
 ![Sample 0](https://github.com/doubotis/MapPictureGenerator/blob/master/samples/sample-0.png)
@@ -30,11 +36,9 @@ Bigger and bigger. Superimpose TMs and WMS layers.
 **Supports any tile size with a very wide range of resolutions.
 The library was tested from 8x8 to 9933x7026 (A1 page, 300dpi) resolutions with good results.**
 
-Best part of the engine is about the customization. You can add many layers as you want.
-* Add transparent TMS or WMS layers on top of a basemap
-* Add some agreements, like pins, lines or polygons
-* At least 1 layer.
-* A basemap is not required.
+## Stability
+* Used for generating small static images in production environment since 2016, without problems.
+* Used for printing services in beta-test environment since 2017, without problems.
 
 ## License
 [GNU Generic Public License](https://github.com/doubotis/MapPictureGenerator/blob/master/LICENSE)
@@ -49,14 +53,14 @@ Best part of the engine is about the customization. You can add many layers as y
 
 ### Use the library
 
-Instantiate a `MapPicture` object, and pass the width and height of the wanted final image as parameters.
+Instantiate a `StaticMap` object, and pass the width and height of the wanted final image as parameters.
 From this object you can set the location and zoom.
-Create a `TMSMapType` to set the basemap provider source, then add it to the list of layers of the `MapPicture`.
+Create a `TMSMapType` to set the basemap provider source, then add it to the list of layers of the `StaticMap`.
 Finally, tell the library to draw the image into a file or into an output stream.
 
 Here's the final example:
 ```
-MapPicture mp = new MapPicture(pictureWidth, pictureHeight);
+StaticMap mp = new StaticMap(pictureWidth, pictureHeight);
 TMSMapType baseMap = new TMSMapType("http://{s}.tile.osm.org/{z}/{x}/{y}.png");
 mp.setLocation(50.5, 5.5);
 mp.setZoom(13);
@@ -67,7 +71,7 @@ mp.drawInto(new File(outPath));
 ### Additional features
 
 ###### fitBounds(bounds)
-Instead of setting the location and zoom, you can tell the `MapPicture` object to fit bounds.
+Instead of setting the location and zoom, you can tell the `StaticMap` object to fit bounds.
 ```
 mp.fitBounds(new LocationBounds(xmin, xmax, ymin, ymax));
 ```
@@ -79,12 +83,12 @@ mp.fitBounds(new LocationBounds(xmin, xmax, ymin, ymax), minZoom, maxZoom);
 ```
 
 ###### Use `LocationPathLayer`
-You can add a linestring by adding a `LocationPathLayer` to your `MapPicture` object.
+You can add a linestring by adding a `LocationPathLayer` to your `StaticMap` object.
 
 ```
 Location[] path;
 final LocationPathLayer layer = new LocationPathLayer(path);
-mapPicture.addLayer(layer);
+staticMap.addLayer(layer);
 ```
 
 ###### Create your custom layer
@@ -95,7 +99,7 @@ public class YourLayer implements Layer {
   ...
   
   @Override
-    public void draw(Graphics2D graphics, MapPicture mp) {
+    public void draw(Graphics2D graphics, StaticMap mp) {
       // Get the current projection.
       MercatorProjection proj = mp.getProjection();
       
@@ -109,8 +113,8 @@ public class YourLayer implements Layer {
 }
 ```
 
-Then add it to the `MapPicture` object.
+Then add it to the `StaticMap` object.
 ```
 YourLayer layer = new YourLayer();
-mapPicture.addLayer(layer);
+staticMap.addLayer(layer);
 ```
