@@ -8,7 +8,8 @@ This could be used for creation of small "preview" pictures, or produce very big
 **Additionnally, this library is _NOT_ a wrapper for Static Maps APIs (Bing, MapBox, Google, ...). The library will not request any services to make the map, he will MAKE the map itself, by requesting and assembling the map tiles from a tile service, like MapBox or OpenStreetMap tile services.**
 
 **[Last Update changes](https://github.com/doubotis/StaticMap/wiki/Last-Updates)**
-T**[TODO List]((https://github.com/doubotis/StaticMap/wiki/TODO-List)**
+
+**[TODO List]((https://github.com/doubotis/StaticMap/wiki/TODO-List)**
 
 ### Features
 * From 8x8 to infinite map sizes (tested until 9933x7026, A1 page at 300dpi)
