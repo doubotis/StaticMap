@@ -1,9 +1,21 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C) 2017 doubotis
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-package com.doubotis.mappicturegenerator.geo;
+package com.doubotis.staticmap.geo;
 
 public class LocationBounds {
 	
@@ -85,8 +97,8 @@ public class LocationBounds {
 	/** Returns true if the <code>GLatLng</code> is contained inside this BBOX. False otherwise. */
 	public boolean contains(Location latLng)
 	{
-		double y = latLng.latitude;
-		double x = latLng.longitude;
+		double y = latLng.mLatitude;
+		double x = latLng.mLongitude;
                 
 		if (y > ymin && y < ymax && x > xmin && x < xmax)
 			return true;
@@ -126,7 +138,7 @@ public class LocationBounds {
 
 		LocationBounds bbox = new LocationBounds(0,0,0,0);
 
-		double[] llcenter = new double[] {latLng.latitude, latLng.longitude};
+		double[] llcenter = new double[] {latLng.mLatitude, latLng.mLongitude};
 		double latitude = llcenter[0];
 		double longitude = llcenter[1];
 		double[] location1 = new double[] { latitude, longitude - 0.5 };

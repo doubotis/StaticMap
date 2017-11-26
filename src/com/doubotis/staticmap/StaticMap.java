@@ -1,9 +1,21 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C) 2017 doubotis
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-package com.doubotis.mappicturegenerator;
+package com.doubotis.staticmap;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -13,22 +25,22 @@ import java.awt.Stroke;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import javax.imageio.ImageIO;
-import com.doubotis.mappicturegenerator.geo.LocationBounds;
-import com.doubotis.mappicturegenerator.geo.Location;
-import com.doubotis.mappicturegenerator.geo.LocationPath;
-import com.doubotis.mappicturegenerator.geo.MercatorProjection;
-import com.doubotis.mappicturegenerator.geo.MercatorUtils;
-import com.doubotis.mappicturegenerator.geo.PointF;
-import com.doubotis.mappicturegenerator.geo.Tile;
-import com.doubotis.mappicturegenerator.layers.LocationPathLayer;
-import com.doubotis.mappicturegenerator.layers.Layer;
-import com.doubotis.mappicturegenerator.maps.TMSMapType;
+import com.doubotis.staticmap.geo.LocationBounds;
+import com.doubotis.staticmap.geo.Location;
+import com.doubotis.staticmap.geo.LocationPath;
+import com.doubotis.staticmap.geo.MercatorProjection;
+import com.doubotis.staticmap.geo.MercatorUtils;
+import com.doubotis.staticmap.geo.PointF;
+import com.doubotis.staticmap.geo.Tile;
+import com.doubotis.staticmap.layers.LocationPathLayer;
+import com.doubotis.staticmap.layers.Layer;
+import com.doubotis.staticmap.maps.TMSMapType;
 import java.awt.RenderingHints;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 
-/** Core class of the MapPictureCreator library. Serves the final results. */
+/** Core class of the StaticMAp library. Serves the final results. */
 public class StaticMap
 {    
     private static final int DEFAULT_TILE_SIZE = 256;
@@ -239,7 +251,7 @@ public class StaticMap
             Location bottomRightLocation = mp.fromPointToLatLng(bottomRightPixels, baseZoom);
             
             // Test if in bounds
-            LocationBounds bboxCalculation = new LocationBounds(topLeftLocation.longitude, bottomRightLocation.longitude, topLeftLocation.latitude, bottomRightLocation.latitude);
+            LocationBounds bboxCalculation = new LocationBounds(topLeftLocation.mLongitude, bottomRightLocation.mLongitude, topLeftLocation.mLatitude, bottomRightLocation.mLatitude);
             
             System.out.println("Trying with " + baseZoom + "...");
             System.out.println(" - " + bboxCalculation.toString());
@@ -255,8 +267,8 @@ public class StaticMap
         MercatorProjection proj = getProjection();
         int tileSize = proj.getTileSize();
         
-        int tileX = proj.tileXFromLongitude(getLocation().longitude, zoom);
-        int tileY = proj.tileYFromLatitude(getLocation().latitude, zoom);
+        int tileX = proj.tileXFromLongitude(getLocation().mLongitude, zoom);
+        int tileY = proj.tileYFromLatitude(getLocation().mLatitude, zoom);
         int tileZ = mZoom;
         
         // Which position for this tile ?
@@ -269,7 +281,7 @@ public class StaticMap
         PointF tilePixels = proj.fromLatLngToPoint(tileLat, tileLon, tileZ);
         System.out.println("tilePixels" + tilePixels.toString());
         
-        PointF centerPixels = proj.fromLatLngToPoint(getLocation().latitude, getLocation().longitude, zoom);
+        PointF centerPixels = proj.fromLatLngToPoint(getLocation().mLatitude, getLocation().mLongitude, zoom);
         System.out.println("centerPixels" + centerPixels.toString());
         
         // Le centre en 824, 539 est l'équivalent de 100,100 sur l'image.

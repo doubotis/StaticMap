@@ -1,17 +1,29 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C) 2017 doubotis
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-package com.doubotis.mappicturegenerator.layers;
+package com.doubotis.staticmap.layers;
 
-import com.doubotis.mappicturegenerator.StaticMap;
-import com.doubotis.mappicturegenerator.geo.Location;
-import com.doubotis.mappicturegenerator.geo.LocationBounds;
-import com.doubotis.mappicturegenerator.geo.LocationPath;
-import com.doubotis.mappicturegenerator.geo.MercatorProjection;
-import com.doubotis.mappicturegenerator.geo.PointF;
-import com.doubotis.mappicturegenerator.geo.Trace;
+import com.doubotis.staticmap.StaticMap;
+import com.doubotis.staticmap.geo.Location;
+import com.doubotis.staticmap.geo.LocationBounds;
+import com.doubotis.staticmap.geo.LocationPath;
+import com.doubotis.staticmap.geo.MercatorProjection;
+import com.doubotis.staticmap.geo.PointF;
+import com.doubotis.staticmap.geo.Trace;
 import com.vividsolutions.jts.geom.Point;
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -32,7 +44,7 @@ public class LocationPathLayer implements Layer
         mTrace = new Trace();
         for(Location loc : points)
         {
-            mTrace.getSegments().add(new Location(loc.latitude, loc.longitude));
+            mTrace.getSegments().add(new Location(loc.mLatitude, loc.mLongitude));
         } 
         mLocationPath = mTrace.getPath();
     }
@@ -71,7 +83,7 @@ public class LocationPathLayer implements Layer
         {
             Location l = locationPath.getLocationAtIndex(i);
             
-            PointF pixelsLocation = proj.fromLatLngToPoint(l.latitude, l.longitude, mp.getZoom());
+            PointF pixelsLocation = proj.fromLatLngToPoint(l.mLatitude, l.mLongitude, mp.getZoom());
             xPoints[i] = (int)(pixelsLocation.x - mp.getOffset().x);
             yPoints[i] = (int)(pixelsLocation.y - mp.getOffset().y);
         }

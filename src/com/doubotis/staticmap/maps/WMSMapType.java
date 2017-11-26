@@ -1,15 +1,27 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C) 2017 doubotis
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-package com.doubotis.mappicturegenerator.maps;
+package com.doubotis.staticmap.maps;
 
-import com.doubotis.mappicturegenerator.StaticMap;
-import com.doubotis.mappicturegenerator.geo.Location;
-import com.doubotis.mappicturegenerator.geo.LocationBounds;
-import com.doubotis.mappicturegenerator.geo.MercatorProjection;
-import com.doubotis.mappicturegenerator.geo.PointF;
+import com.doubotis.staticmap.StaticMap;
+import com.doubotis.staticmap.geo.Location;
+import com.doubotis.staticmap.geo.LocationBounds;
+import com.doubotis.staticmap.geo.MercatorProjection;
+import com.doubotis.staticmap.geo.PointF;
 import java.awt.Graphics2D;
 import java.awt.Image;
 
@@ -67,10 +79,10 @@ public class WMSMapType extends TMSMapType
         Location bottomRightLocation = proj.fromPointToLatLng(bottomRightCorner, tileZ);
         
         LocationBounds bounds = new LocationBounds(
-                topLeftLocation.longitude,
-                bottomRightLocation.longitude,
-                topLeftLocation.latitude,
-                bottomRightLocation.latitude);
+                topLeftLocation.mLongitude,
+                bottomRightLocation.mLongitude,
+                topLeftLocation.mLatitude,
+                bottomRightLocation.mLatitude);
             
         pattern += "&Styles=&SRS=EPSG:4326";
         pattern += "&BBOX=" + bounds.xmin + "," + bounds.ymax + "," + bounds.xmax + "," + bounds.ymin;

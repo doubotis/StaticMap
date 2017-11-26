@@ -1,17 +1,29 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C) 2017 doubotis
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-package com.doubotis.mappicturegenerator.maps;
+package com.doubotis.staticmap.maps;
 
-import com.doubotis.mappicturegenerator.StaticMap;
-import com.doubotis.mappicturegenerator.geo.Location;
-import com.doubotis.mappicturegenerator.geo.MercatorProjection;
-import com.doubotis.mappicturegenerator.geo.MercatorUtils;
-import com.doubotis.mappicturegenerator.geo.PointF;
-import com.doubotis.mappicturegenerator.geo.Tile;
-import com.doubotis.mappicturegenerator.layers.Layer;
+import com.doubotis.staticmap.StaticMap;
+import com.doubotis.staticmap.geo.Location;
+import com.doubotis.staticmap.geo.MercatorProjection;
+import com.doubotis.staticmap.geo.MercatorUtils;
+import com.doubotis.staticmap.geo.PointF;
+import com.doubotis.staticmap.geo.Tile;
+import com.doubotis.staticmap.layers.Layer;
 import java.awt.Graphics2D;
 import java.awt.Image;
 
@@ -43,8 +55,8 @@ public abstract class BaseMapType implements Layer
         MercatorProjection proj = mp.getProjection();
         int tileSize = proj.getTileSize();
         
-        int tileX = proj.tileXFromLongitude(mp.getLocation().longitude, mp.getZoom());
-        int tileY = proj.tileYFromLatitude(mp.getLocation().latitude, mp.getZoom());
+        int tileX = proj.tileXFromLongitude(mp.getLocation().mLongitude, mp.getZoom());
+        int tileY = proj.tileYFromLatitude(mp.getLocation().mLatitude, mp.getZoom());
         int tileZ = mp.getZoom();
         
         
@@ -55,8 +67,8 @@ public abstract class BaseMapType implements Layer
         Location topLeftLocation = proj.fromPointToLatLng(topLeftPixels, mp.getZoom());
         System.out.println("topLeftLocation: " + topLeftLocation.toString());
         Tile topLeftTile = new Tile(
-                proj.tileXFromLongitude(topLeftLocation.longitude, mp.getZoom()),
-                proj.tileYFromLatitude(topLeftLocation.latitude, mp.getZoom()),
+                proj.tileXFromLongitude(topLeftLocation.mLongitude, mp.getZoom()),
+                proj.tileYFromLatitude(topLeftLocation.mLatitude, mp.getZoom()),
                 mp.getZoom());
         
         // Get the bottom right point.
@@ -66,8 +78,8 @@ public abstract class BaseMapType implements Layer
         Location bottomRightLocation = proj.fromPointToLatLng(bottomRightPixels, mp.getZoom());
         System.out.println("bottomRightLocation: " + bottomRightLocation.toString());
         Tile bottomRightTile = new Tile(
-                proj.tileXFromLongitude(bottomRightLocation.longitude, mp.getZoom()),
-                proj.tileYFromLatitude(bottomRightLocation.latitude, mp.getZoom()),
+                proj.tileXFromLongitude(bottomRightLocation.mLongitude, mp.getZoom()),
+                proj.tileYFromLatitude(bottomRightLocation.mLatitude, mp.getZoom()),
                 mp.getZoom());
         
         System.out.println("");
