@@ -49,21 +49,20 @@ The library was tested from 8x8 to 9933x7026 (A1 page, 300dpi) resolutions with 
 
 ### Installation
 
-1. Build the library by yourself or use this **[distribution jar](https://github.com/doubotis/MapPictureGenerator/blob/master/dist/MapPictureGenerator.jar)**.
+1. Build the library by yourself or use this **[distribution jar](https://github.com/doubotis/MapPictureGenerator/blob/master/dist/StaticMap.jar)**.
 2. Add the .jar to your project.
-3. Add the JTS library **[jts-1.8.jar](https://github.com/doubotis/MapPictureGenerator/blob/master/lib/jts-1.8.jar)**.
 
 ### Use the library
 
 Instantiate a `StaticMap` object, and pass the width and height of the wanted final image as parameters.
 From this object you can set the location and zoom.
-Create a `TMSMapType` to set the basemap provider source, then add it to the list of layers of the `StaticMap`.
+Create a `TMSLayer`to set the map tile provider source, then add it to the list of layers of the `StaticMap`.
 Finally, tell the library to draw the image into a file or into an output stream.
 
 Here's the final example:
 ```
 StaticMap mp = new StaticMap(pictureWidth, pictureHeight);
-TMSMapType baseMap = new TMSMapType("http://{s}.tile.osm.org/{z}/{x}/{y}.png");
+TMSLayer baseMap = new TMSLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png");
 mp.setLocation(50.5, 5.5);
 mp.setZoom(13);
 mp.addLayer(baseMap);
@@ -84,12 +83,12 @@ You can tell the fit bounds method to limit the zoom range to min-max values.
 mp.fitBounds(new LocationBounds(xmin, xmax, ymin, ymax), minZoom, maxZoom);
 ```
 
-###### Use `LocationPathLayer`
+###### Use of markers, linestring or polygons
 You can add a linestring by adding a `LocationPathLayer` to your `StaticMap` object.
 
 ```
 Location[] path;
-final LocationPathLayer layer = new LocationPathLayer(path);
+final LineString layer = new LineString(path);
 staticMap.addLayer(layer);
 ```
 
