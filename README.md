@@ -9,9 +9,9 @@ This could be used for creation of small "preview" pictures, or produce very big
 
 Code reviewed and improved by Blake7
 
-**[Last Update changes](https://github.com/doubotis/StaticMap/wiki/Last-Updates)**
+* **[Last Update changes](https://github.com/doubotis/StaticMap/wiki/Last-Updates)**
 
-**[TODO List](https://github.com/doubotis/StaticMap/wiki/TODO-List)**
+* **[TODO List](https://github.com/doubotis/StaticMap/wiki/TODO-List)**
 
 ### Features
 * From 8x8 to infinite map sizes (tested until 9933x7026, A1 page at 300dpi)
