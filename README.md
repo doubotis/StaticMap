@@ -7,6 +7,8 @@ This could be used for creation of small "preview" pictures, or produce very big
 
 **Additionnally, this library is _NOT_ a wrapper for Static Maps APIs (Bing, MapBox, Google, ...). The library will not request any services to make the map, he will MAKE the map itself, by requesting and assembling the map tiles from a tile service, like MapBox or OpenStreetMap tile services.**
 
+Code reviewed and improved by Blake7
+
 **[Last Update changes](https://github.com/doubotis/StaticMap/wiki/Last-Updates)**
 
 **[TODO List](https://github.com/doubotis/StaticMap/wiki/TODO-List)**
