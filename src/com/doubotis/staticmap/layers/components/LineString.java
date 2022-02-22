@@ -104,7 +104,7 @@ public class LineString implements Layer
         BasicStroke sCenter = new BasicStroke(mStrokeWidth, 
                 BasicStroke.CAP_ROUND, 
                 BasicStroke.JOIN_ROUND);
-        graphics.setColor(Color.RED);
+        graphics.setColor(mStrokeColor);
         graphics.setStroke(sCenter);
         graphics.drawPolyline(xPoints, yPoints, mPath.getSize());
         
