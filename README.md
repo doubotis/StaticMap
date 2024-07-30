@@ -44,7 +44,7 @@ The library was tested from 8x8 to 9933x7026 (A1 page, 300dpi) resolutions with 
 
 ## Stability
 * Used for generating small static images in production environment since 2016, without problems.
-* Used for printing services in beta-test environment since 2017, without problems.
+* Used for printing services in production environment since 2017, without problems.
 
 ## License
 [GNU Generic Public License](https://github.com/doubotis/MapPictureGenerator/blob/master/LICENSE)
